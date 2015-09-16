@@ -53,9 +53,26 @@ class EncryptTest < Minitest::Test
 
   # pass in non defaults
 
-  def test_we_can_iterate_over_first_element
+  def test_we_can_iterate_over_a_elements
     encrypt = Encrypt.new(12345)
-    assert_equal "q", encrypt.iteration[0]
+    assert_equal ",", encrypt.iteration[0]
+    assert_equal "3", encrypt.iteration[4]
+  end
+
+  def test_we_can_iterate_over_b_elements
+    encrypt = Encrypt.new(12345)
+    assert_equal "6", encrypt.iteration[1]
+    assert_equal "e", encrypt.iteration[5]
+  end
+
+  def test_we_can_iterate_over_c_elements
+    encrypt = Encrypt.new(12345)
+    assert_equal " ", encrypt.iteration[2]
+  end
+
+  def test_we_can_iterate_over_d_elements
+    encrypt = Encrypt.new(12345)
+    assert_equal "y", encrypt.iteration[3]
   end
 
   # def test_it_can_rotate_in_the_array
