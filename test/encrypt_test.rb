@@ -1,7 +1,7 @@
 gem 'minitest', '~> 5.0'
 require 'minitest/autorun'
 require 'minitest/pride'
-require '../lib/encrypt.rb'
+require './lib/encrypt.rb'
 
 class EncryptTest < Minitest::Test
 
@@ -12,7 +12,7 @@ class EncryptTest < Minitest::Test
 
   def test_that_it_can_produce_a_date_integer_with_todays_date
     encrypt = Encrypt.new(12345)
-    assert_equal 150915, encrypt.date
+    assert_equal 160915, encrypt.date
   end
 
   def test_key_rotations_are_created
@@ -25,12 +25,12 @@ class EncryptTest < Minitest::Test
 
   def test_date_is_todays_date
     encrypt = Encrypt.new(12345)
-    assert_equal 150915, encrypt.date
+    assert_equal 160915, encrypt.date
   end
 
   def test_that_square_the_date_method_works
     encrypt = Encrypt.new(12345)
-    assert_equal 22775337225, encrypt.square_the_date
+    assert_equal 25893637225, encrypt.square_the_date
   end
 
   def test_offsets_are_created
@@ -53,26 +53,46 @@ class EncryptTest < Minitest::Test
 
   # pass in non defaults
 
-  def test_we_can_iterate_over_a_elements
+  def test_we_can_encrypt_over_a_elements
     encrypt = Encrypt.new(12345)
-    assert_equal ",", encrypt.iteration[0]
-    assert_equal "3", encrypt.iteration[4]
+    assert_equal ",", encrypt.encryption[0]
+    assert_equal "3", encrypt.encryption[4]
   end
 
-  def test_we_can_iterate_over_b_elements
+  def test_we_can_encrypt_over_b_elements
     encrypt = Encrypt.new(12345)
-    assert_equal "6", encrypt.iteration[1]
-    assert_equal "e", encrypt.iteration[5]
+    assert_equal "6", encrypt.encryption[1]
+    assert_equal "e", encrypt.encryption[5]
   end
 
-  def test_we_can_iterate_over_c_elements
+  def test_we_can_encrypt_over_c_elements
     encrypt = Encrypt.new(12345)
-    assert_equal " ", encrypt.iteration[2]
+    assert_equal " ", encrypt.encryption[2]
   end
 
-  def test_we_can_iterate_over_d_elements
+  def test_we_can_encrypt_over_d_elements
     encrypt = Encrypt.new(12345)
-    assert_equal "y", encrypt.iteration[3]
+    assert_equal "y", encrypt.encryption[3]
+  end
+
+  def test_we_can_join_the_encrypted_array_into_a_string
+    encrypt = Encrypt.new(12345)
+    assert_equal ",6 y3e", encrypt.join_chars_string
+  end
+
+  def test_we_can_encrypt_another_input_string_with_eight_characters
+    encrypt = Encrypt.new(12345, "Four One")
+    assert_equal "yar2qakp", encrypt.join_chars_string
+  end
+
+  def test_we_can_encrypt_same_input_string_with_eight_characters_with_another_key
+    encrypt = Encrypt.new(85249, "Four One")
+    assert_equal "t3h6l3at", encrypt.join_chars_string
+  end
+
+  def test_we_can_encrypt_another_input_string_with_twenty_characters
+    encrypt = Encrypt.new(12345, "This is twenty chars")
+    assert_equal ",6f3q7pi,iby,k7n0zo3", encrypt.join_chars_string
   end
 
   # def test_it_can_rotate_in_the_array

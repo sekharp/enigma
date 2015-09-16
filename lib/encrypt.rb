@@ -1,10 +1,8 @@
-require 'pry'
-
 class Encrypt
   attr_reader :input,
               :date
 
-  def initialize(key, input = "Thanks")
+  def initialize(key = 12345, input = "Thanks")
     @key = key
     @date = Time.now.strftime("%d%m%y").to_i
     @input = input
@@ -81,7 +79,7 @@ class Encrypt
     chars_array = downcase_string.chars
   end
 
-  def iteration
+  def encryption
     chars_string.map!.with_index do |char, index|
       if index % 4 == 0
         rotation = character_map.index("#{char}") + a_full
@@ -103,30 +101,18 @@ class Encrypt
     end
   end
 
-  # iterate over elements based on index modulo 4 == 0/1/2/3
-  # rotate by key of a rotation plus a offset or ...
-  # where rotate involves first pulling the index of the
-  # element in the character map and adding the rotation offset
-  # and rotating the character map by that full amount then
-  # using shift on the character map array to return encrypted
-  # character which we then map onto the input string array
-  # array.join at again
+  def join_chars_string
+    encryption.join
+  end
 
 end
 
-encrypt = Encrypt.new(12345)
-encrypt.iteration
-
-# if __FILE__==$0
-#   def date(date)
-#     date.strftime("%d%m%y")
-#   end
-#
-#   input_string = File.open(ARGV[0]).read
-#   key = 5.times.map { ('0'..'9').to_a.sample }.join
-#   output_file = File.open(ARGV[1], "w")
-#   output_string = "Hello"
-#   output_file.write(output_string)
-#   date = Time.now.strftime("%d%m%y")
-#   puts "Created '#{ARGV[1]}' with the key #{key} and date #{date}"
-# end
+if __FILE__==$0
+  input_string = File.open(ARGV[0]).read
+  key = 5.times.map { ('0'..'9').to_a.sample }.join
+  output_file = File.open(ARGV[1], "w")
+  output_string = Encrypt.new(key, "#{input_string}").join_chars_string
+  output_file.write(output_string)
+  date = Time.now.strftime("%d%m%y")
+  puts "Created '#{ARGV[1]}' with the key #{key} and date #{date}"
+end
