@@ -17,10 +17,10 @@ class EncryptTest < Minitest::Test
 
   def test_key_rotations_are_created
     encrypt = Encrypt.new(12345)
-    assert_equal 12, encrypt.key_a_rotation
-    assert_equal 23, encrypt.key_b_rotation
-    assert_equal 34, encrypt.key_c_rotation
-    assert_equal 45, encrypt.key_d_rotation
+    assert_equal 12, encrypt.key_rotation(1)
+    assert_equal 23, encrypt.key_rotation(2)
+    assert_equal 34, encrypt.key_rotation(3)
+    assert_equal 45, encrypt.key_rotation(4)
   end
 
   def test_date_is_todays_date
@@ -35,11 +35,13 @@ class EncryptTest < Minitest::Test
 
   def test_offsets_are_created
     encrypt = Encrypt.new(12345)
-    assert_equal 7, encrypt.a_offset
-    assert_equal 2, encrypt.b_offset
-    assert_equal 2, encrypt.c_offset
-    assert_equal 5, encrypt.d_offset
+    assert_equal 7, encrypt.offset(1)
+    assert_equal 2, encrypt.offset(2)
+    assert_equal 2, encrypt.offset(3)
+    assert_equal 5, encrypt.offset(4)
   end
+
+  # do we need to test full rotations?
 
   def test_we_can_downcase_an_input_string
     encrypt = Encrypt.new(12345)

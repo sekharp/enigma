@@ -12,56 +12,20 @@ class Encrypt
     @key = 5.times.map { ('0'..'9').to_a.sample }.join
   end
 
-  def key_a_rotation
-    a = @key.to_s[0..1].to_i
-  end
-
-  def key_b_rotation
-    b = @key.to_s[1..2].to_i
-  end
-
-  def key_c_rotation
-    c = @key.to_s[2..3].to_i
-  end
-
-  def key_d_rotation
-    d = @key.to_s[3..4].to_i
+  def key_rotation(wheel)
+    @key.to_s[wheel-1..wheel].to_i
   end
 
   def square_the_date
     square_of_date = @date * @date
   end
 
-  def a_offset
-    a_offset = square_the_date.to_s[-4].to_i
+  def offset(wheel)
+    offset = square_the_date.to_s[wheel-5].to_i
   end
 
-  def b_offset
-    b_offset = square_the_date.to_s[-3].to_i
-  end
-
-  def c_offset
-    c_offset = square_the_date.to_s[-2].to_i
-  end
-
-  def d_offset
-    d_offset = square_the_date.to_s[-1].to_i
-  end
-
-  def a_full
-    a_full = key_a_rotation + a_offset
-  end
-
-  def b_full
-    b_full = key_b_rotation + b_offset
-  end
-
-  def c_full
-    c_full = key_c_rotation + c_offset
-  end
-
-  def d_full
-    d_full = key_d_rotation + d_offset
+  def full_rotation(wheel)
+    full_rotation = key_rotation(wheel) + offset(wheel)
   end
 
   def character_map
@@ -82,19 +46,19 @@ class Encrypt
   def encryption
     chars_string.map!.with_index do |char, index|
       if index % 4 == 0
-        rotation = character_map.index("#{char}") + a_full
+        rotation = character_map.index("#{char}") + full_rotation(1)
         new_char = character_map.rotate(rotation).shift
         char = new_char
       elsif index % 4 == 1
-        rotation = character_map.index("#{char}") + b_full
+        rotation = character_map.index("#{char}") + full_rotation(2)
         new_char = character_map.rotate(rotation).shift
         char = new_char
       elsif index % 4 == 2
-        rotation = character_map.index("#{char}") + c_full
+        rotation = character_map.index("#{char}") + full_rotation(3)
         new_char = character_map.rotate(rotation).shift
         char = new_char
       else index % 4 == 3
-        rotation = character_map.index("#{char}") + d_full
+        rotation = character_map.index("#{char}") + full_rotation(4)
         new_char = character_map.rotate(rotation).shift
         char = new_char
       end
@@ -106,6 +70,9 @@ class Encrypt
   end
 
 end
+
+encrypt = Encrypt.new
+encrypt.join_chars_string
 
 if __FILE__==$0
   input_string = File.open(ARGV[0]).read
