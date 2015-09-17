@@ -3,7 +3,8 @@ class Cracked
               :date,
               :key
 
-  def initialize(input = ",6 y3e")
+
+  def initialize(input = ",6 y3e8jx,ajr")
     @key = key
     @date = Time.now.strftime("%d%m%y").to_i
     @input = input
@@ -11,7 +12,7 @@ class Cracked
 
   def crack_key
     correction = @input.length % 4
-    encrypted_char = @input[-4-correction] # char is a rotation from .
+    encrypted_char_a = @input[-4-correction] # encrypted_char_a is a rotation from
     full_rotation(1) = character_map.index("#{encrypted_char}") - rotation
   end
 
@@ -24,15 +25,15 @@ class Cracked
   end
 
   def square_the_date
-    square_of_date = @date * @date
+    @date * @date
   end
 
   def offset(wheel)
-    offset = square_the_date.to_s[wheel-5].to_i
+    square_the_date.to_s[wheel-5].to_i
   end
 
   def full_rotation(wheel)
-    full_rotation = key_rotation(wheel) + offset(wheel)
+    key_rotation(wheel) + offset(wheel)
   end
 
   def character_map
@@ -70,7 +71,13 @@ class Cracked
 
 end
 
-Cracked.new(",6 y3e").input[-6]
+Cracked.new(",6 y3e8jx,ajr").input[-5]
+# "thanks..end.."
+# e maps to x - a rotation
+# n maps to , - b rotation
+# d maps to a - c rotation
+# . maps to j - d rotation
+# use math in decryption to solve for rotation amount between x and e, then calculation full rotation for a, then use date to get offsets and get original key
 
 if __FILE__==$0
   input_string = File.read(ARGV[0])
