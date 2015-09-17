@@ -1,3 +1,4 @@
+require 'pry'
 class Cracked
   attr_reader :input,  # => :input
               :date,   # => :date
@@ -6,14 +7,16 @@ class Cracked
   def initialize(input = ",6 y3e8jx,ajr")
     @key = key                                # => nil
     @date = Time.now.strftime("%d%m%y").to_i  # => 160915
-    @input = input                            # => ",6 y3e8jx,ajr"
+    @input = input
+                               # => ",6 y3e8jx,ajr"
   end                                         # => :initialize
 
   def crack_key
+    # binding.pry
     correction = @input.length % 4
-    encrypted_char_a = @input[-4-correction] # encrypted_char_a is a rotation from
-    full_rotation(1) = character_map.index("#{encrypted_char}") - rotation
-  end                               # => :crack_key
+    encrypted_char_a = @input[-4-correction]  # encrypted_char_a is a rotation from
+    # full_rotation(1) = character_map.index("#{encrypted_char}") - rotation
+  end                                # => :crack_key
 
   def chars_string
     input.chars
@@ -70,23 +73,25 @@ class Cracked
 
 end  # => :join_chars_string
 
-Cracked.new(",6 y3e8jx,ajr").input[-5]  # => "x"
+# Cracked.new(",6 y3e8jx,ajr").input[-5]
+# Cracked.ack_key  # => "x"
 # "thanks..end.."
 # e maps to x - a rotation
 # n maps to , - b rotation
 # d maps to a - c rotation
 # . maps to j - d rotation
 # use math in decryption to solve for rotation amount between x and e, then calculation full rotation for a, then use date to get offsets and get original key
+#
+# if __FILE__==$0                                                                # => true
+#   input_string = File.read(ARGV[0])                                            # ~> TypeError: no implicit conversion of nil into String
+#   key = key
+#   output_file = File.open(ARGV[1], "w")
+#   output_string = Cracked.new(key, "#{input_string}").join_chars_string
+#   output_file.write(output_string)
+#   date = Time.now.strftime("%d%m%y")
+#   puts "Created '#{ARGV[1]}' with the cracked key #{key} and date #{ARGV[2]}"
+# end
 
-if __FILE__==$0                                                                # => true
-  input_string = File.read(ARGV[0])                                            # ~> TypeError: no implicit conversion of nil into String
-  key = key
-  output_file = File.open(ARGV[1], "w")
-  output_string = Cracked.new(key, "#{input_string}").join_chars_string
-  output_file.write(output_string)
-  date = Time.now.strftime("%d%m%y")
-  puts "Created '#{ARGV[1]}' with the cracked key #{key} and date #{ARGV[2]}"
-end
 
 # ~> TypeError
 # ~> no implicit conversion of nil into String
