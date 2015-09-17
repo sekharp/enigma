@@ -12,7 +12,7 @@ class EncryptTest < Minitest::Test
 
   def test_that_it_can_produce_a_date_integer_with_todays_date
     encrypt = Encrypt.new(12345)
-    assert_equal 160915, encrypt.date
+    assert_equal 170915, encrypt.date
   end
 
   def test_key_rotations_are_created
@@ -23,14 +23,18 @@ class EncryptTest < Minitest::Test
     assert_equal 45, encrypt.key_rotation(4)
   end
 
+  def test_key_rotations_are_created_for_another_key
+    skip
+  end
+
   def test_date_is_todays_date
     encrypt = Encrypt.new(12345)
-    assert_equal 160915, encrypt.date
+    assert_equal 170915, encrypt.date
   end
 
   def test_that_square_the_date_method_works
     encrypt = Encrypt.new(12345)
-    assert_equal 25893637225, encrypt.square_the_date
+    assert_equal 29211937225, encrypt.square_the_date
   end
 
   def test_offsets_are_created
@@ -41,7 +45,19 @@ class EncryptTest < Minitest::Test
     assert_equal 5, encrypt.offset(4)
   end
 
-  # do we need to test full rotations?
+  def test_full_rotation_created
+    encrypt = Encrypt.new(12345)
+    assert_equal 19, encrypt.full_rotation(1)
+    assert_equal 25, encrypt.full_rotation(2)
+    assert_equal 36, encrypt.full_rotation(3)
+    assert_equal 50, encrypt.full_rotation(4)
+  end
+
+  def test_full_rotation_created_for_another_key
+    skip
+  end
+
+  # test for multiple dates and other keys for everything that uses them
 
   def test_we_can_downcase_an_input_string
     encrypt = Encrypt.new(12345)
@@ -52,8 +68,6 @@ class EncryptTest < Minitest::Test
     encrypt = Encrypt.new(12345)
     assert_equal ["t", "h", "a", "n", "k", "s"], encrypt.chars_string
   end
-
-  # pass in non defaults
 
   def test_we_can_encrypt_over_a_elements
     encrypt = Encrypt.new(12345)
@@ -97,11 +111,11 @@ class EncryptTest < Minitest::Test
     assert_equal ",6f3q7pi,iby,k7n0zo3", encrypt.join_chars_string
   end
 
-  # def test_it_can_rotate_in_the_array
-  #   skip
-  #   encrypt = Encrypt.new(12345)
-  #   encrypt.character_map.rotate(5)
-  #   assert_equal "e", encrypt.character_map.rotate(5)
-  # end
+  def test_it_can_rotate_in_the_array
+    skip
+    # encrypt = Encrypt.new(12345)
+    # encrypt.character_map.rotate(5)
+    # assert_equal "e", encrypt.character_map.rotate(5)
+  end
 
 end
