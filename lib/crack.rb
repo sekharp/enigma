@@ -3,15 +3,15 @@ class Cracked
               :date,   # => :date
               :key     # => nil
 
-  def initialize(input = ",6 y3e")
+  def initialize(input = ",6 y3e8jx,ajr")
     @key = key                                # => nil
     @date = Time.now.strftime("%d%m%y").to_i  # => 160915
-    @input = input                            # => ",6 y3e"
+    @input = input                            # => ",6 y3e8jx,ajr"
   end                                         # => :initialize
 
   def crack_key
     correction = @input.length % 4
-    encrypted_char = @input[-4-correction] # char is a rotation from .
+    encrypted_char_a = @input[-4-correction] # encrypted_char_a is a rotation from
     full_rotation(1) = character_map.index("#{encrypted_char}") - rotation
   end                               # => :crack_key
 
@@ -24,15 +24,15 @@ class Cracked
   end                               # => :key_rotation
 
   def square_the_date
-    square_of_date = @date * @date
+    @date * @date
   end                               # => :square_the_date
 
   def offset(wheel)
-    offset = square_the_date.to_s[wheel-5].to_i
+    square_the_date.to_s[wheel-5].to_i
   end                                            # => :offset
 
   def full_rotation(wheel)
-    full_rotation = key_rotation(wheel) + offset(wheel)
+    key_rotation(wheel) + offset(wheel)
   end                                                    # => :full_rotation
 
   def character_map
@@ -70,7 +70,13 @@ class Cracked
 
 end  # => :join_chars_string
 
-Cracked.new(",6 y3e").input[-6]  # => ","
+Cracked.new(",6 y3e8jx,ajr").input[-5]  # => "x"
+# "thanks..end.."
+# e maps to x - a rotation
+# n maps to , - b rotation
+# d maps to a - c rotation
+# . maps to j - d rotation
+# use math in decryption to solve for rotation amount between x and e, then calculation full rotation for a, then use date to get offsets and get original key
 
 if __FILE__==$0                                                                # => true
   input_string = File.read(ARGV[0])                                            # ~> TypeError: no implicit conversion of nil into String
@@ -85,5 +91,5 @@ end
 # ~> TypeError
 # ~> no implicit conversion of nil into String
 # ~>
-# ~> /Users/sekharpaladugu/code/projects/enigma/lib/crack.rb:75:in `read'
-# ~> /Users/sekharpaladugu/code/projects/enigma/lib/crack.rb:75:in `<main>'
+# ~> /Users/joshuajhun/turing/mod1/projects/enigma/lib/crack.rb:76:in `read'
+# ~> /Users/joshuajhun/turing/mod1/projects/enigma/lib/crack.rb:76:in `<main>'

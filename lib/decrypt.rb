@@ -18,15 +18,15 @@ class Decrypt
   end
 
   def square_the_date
-    square_of_date = @date * @date
+    @date * @date
   end
 
   def offset(wheel)
-    offset = square_the_date.to_s[wheel-5].to_i
+    square_the_date.to_s[wheel-5].to_i
   end
 
   def full_rotation(wheel)
-    full_rotation = key_rotation(wheel) + offset(wheel)
+    key_rotation(wheel) + offset(wheel)
   end
 
   def character_map
