@@ -10,33 +10,6 @@ class Cracked
     @input = input
   end
 
-  def crack_key
-    # binding.pry
-    correction = @input.length % 4
-    encrypted_char_a = @input[-4-correction]  # encrypted_char_a is a rotation from
-    # full_rotation(1) = character_map.index("#{encrypted_char}") - rotation
-  end
-
-  def chars_string
-    input.chars
-  end
-
-  def key_rotation(wheel)
-    @key.to_s[wheel-1..wheel].to_i
-  end
-
-  def square_the_date
-    @date * @date
-  end
-
-  def offset(wheel)
-    square_the_date.to_s[wheel-5].to_i
-  end
-
-  def full_rotation(wheel)
-    key_rotation(wheel) + offset(wheel)
-  end
-
   def character_map
     character_map = ["a", "b", "c", "d", "e", "f", "g", "h", "i",
       "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
@@ -44,30 +17,27 @@ class Cracked
       "7", "8", "9", " ", ".", ","]
   end
 
-  def decryption
-    chars_string.map!.with_index do |char, index|
-      if index % 4 == 0
-        rotation = character_map.index("#{char}") - full_rotation(1)
-        new_char = character_map.rotate(rotation).shift
-        char = new_char
-      elsif index % 4 == 1
-        rotation = character_map.index("#{char}") - full_rotation(2)
-        new_char = character_map.rotate(rotation).shift
-        char = new_char
-      elsif index % 4 == 2
-        rotation = character_map.index("#{char}") - full_rotation(3)
-        new_char = character_map.rotate(rotation).shift
-        char = new_char
-      else index % 4 == 3
-        rotation = character_map.index("#{char}") - full_rotation(4)
-        new_char = character_map.rotate(rotation).shift
-        char = new_char
-      end
-    end
+  def crack_key_a_full_rotation
+    correction = @input.length % 4
+    encrypted_char_a = @input[-4-correction] # "x"
+    decrypted_end = "..end.."
+    decrypted_char_a = decrypted_end[-4-correction] # "e"
+    character_map.index("#{encrypted_char_a}") # 23
+    character_map.index("#{decrypted_char_a}") # 4
+    full_rotation_a = character_map.index("#{encrypted_char_a}") - character_map.index("#{decrypted_char_a}")
   end
 
-  def join_chars_string
-    decryption.join
+  def square_the_date
+    @date * @date
+  end
+
+  def offset_a
+    square_the_date.to_s[-4].to_i
+  end
+
+  def key_rotation_a
+    key_rotation_a = crack_key_a_full_rotation - offset_a
+    binding.pry
   end
 
 end
