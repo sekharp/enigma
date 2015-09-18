@@ -1,11 +1,9 @@
 require 'pry'
 class Cracked
   attr_reader :input,
-              :date,
-              :key
+              :date
 
   def initialize(input = ",6 y3e8jx,ajr")
-    @key = key
     @date = Time.now.strftime("%d%m%y").to_i
     @input = input
   end
@@ -19,46 +17,85 @@ class Cracked
 
   def crack_key_a_full_rotation
     correction = @input.length % 4
-    encrypted_char_a = @input[-4-correction] # "x"
+    encrypted_char_a = @input[-4-correction]
     decrypted_end = "..end.."
-    decrypted_char_a = decrypted_end[-4-correction] # "e"
-    character_map.index("#{encrypted_char_a}") # 23
-    character_map.index("#{decrypted_char_a}") # 4
+    decrypted_char_a = decrypted_end[-4-correction]
     full_rotation_a = character_map.index("#{encrypted_char_a}") - character_map.index("#{decrypted_char_a}")
   end
 
-  def square_the_date
-    @date * @date
-  end
-
-  def offset_a
-    square_the_date.to_s[-4].to_i
-  end
-
   def key_rotation_a
-    key_rotation_a = crack_key_a_full_rotation - offset_a
-    binding.pry
+    key_rotation_a = crack_key_a_full_rotation % 39
   end
 
+  def crack_key_b_full_rotation
+    correction = @input.length % 4
+    encrypted_char_b = @input[-3-correction]
+    decrypted_end = "..end.."
+    decrypted_char_b = decrypted_end[-3-correction]
+    full_rotation_b = character_map.index("#{encrypted_char_b}") - character_map.index("#{decrypted_char_b}")
+  end
+
+  def key_rotation_b
+    key_rotation_b = crack_key_b_full_rotation % 39
+  end
+
+  def crack_key_c_full_rotation
+    correction = @input.length % 4
+    encrypted_char_c = @input[-2-correction]
+    decrypted_end = "..end.."
+    decrypted_char_c = decrypted_end[-2-correction]
+    full_rotation_c = character_map.index("#{encrypted_char_c}") - character_map.index("#{decrypted_char_c}")
+  end
+
+  def key_rotation_c
+    key_rotation_c = crack_key_c_full_rotation  % 39
+  end
+
+  def crack_key_d_full_rotation
+    correction = @input.length % 4
+    encrypted_char_d = @input[-1-correction]
+    decrypted_end = "..end.."
+    decrypted_char_d = decrypted_end[-1-correction]
+    full_rotation_d = character_map.index("#{encrypted_char_d}") - character_map.index("#{decrypted_char_d}")
+    end
+
+  def key_rotation_d
+    key_rotation_d = crack_key_d_full_rotation  % 39
+  end
+
+  def decryption
+    @input.chars.map!.with_index do |char, index|
+      if index % 4 == 0
+        rotation = character_map.index("#{char}") - key_rotation_a
+        new_char = character_map.rotate(rotation).shift
+        char = new_char
+      elsif index % 4 == 1
+        rotation = character_map.index("#{char}") - key_rotation_b
+        new_char = character_map.rotate(rotation).shift
+        char = new_char
+      elsif index % 4 == 2
+        rotation = character_map.index("#{char}") - key_rotation_c
+        new_char = character_map.rotate(rotation).shift
+        char = new_char
+      else index % 4 == 3
+        rotation = character_map.index("#{char}") - key_rotation_d
+        new_char = character_map.rotate(rotation).shift
+        char = new_char
+      end
+    end
+  end
+
+  def join_chars_string
+   decryption.join
+  end
 end
 
-# Cracked.new(",6 y3e8jx,ajr").input[-5]
-# Cracked.ack_key  # => "x"
-
-# "thanks..end.."
-# e maps to x - a rotation
-# n maps to , - b rotation
-# d maps to a - c rotation
-# . maps to j - d rotation
-# use math in decryption to solve for rotation amount between x and e,
-# then calculation full rotation for a, then use date to get offsets and get original key
-#
-# if __FILE__==$0
-#   input_string = File.read(ARGV[0])
-#   key = key
-#   output_file = File.open(ARGV[1], "w")
-#   output_string = Cracked.new(key, "#{input_string}").join_chars_string
-#   output_file.write(output_string)
-#   date = Time.now.strftime("%d%m%y")
-#   puts "Created '#{ARGV[1]}' with the cracked key #{key} and date #{ARGV[2]}"
-# end
+if __FILE__==$0
+  input_string = File.read(ARGV[0])
+  key = 99999
+  output_file = File.open(ARGV[1], "w")
+  output_string = Cracked.new("#{input_string}").join_chars_string
+  output_file.write(output_string)
+  date = Time.now.strftime("%d%m%y")
+  puts "Created '#{ARGV[1]}' with the cracked key #{key} and date"
+end

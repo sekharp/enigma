@@ -17,11 +17,8 @@ class Decrypt
     @key.to_s[wheel-1..wheel].to_i
   end
 
-  def square_the_date
-    @date * @date
-  end
-
   def offset(wheel)
+    square_the_date = @date * @date
     square_the_date.to_s[wheel-5].to_i
   end
 
