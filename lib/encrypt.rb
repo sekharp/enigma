@@ -1,6 +1,7 @@
 class Encrypt
   attr_reader :input,
-              :date
+              :date,
+              :key
 
   def initialize(key = 12345, input = "Thanks")
     @key = key
@@ -70,8 +71,8 @@ end
 
 if __FILE__==$0
   input_string = File.read(ARGV[0])
-  key = 12345
-  # key = 5.times.map { ('0'..'9').to_a.sample }.join
+  # key = 12345
+  key = 5.times.map { ('0'..'9').to_a.sample }.join
   output_file = File.open(ARGV[1], "w")
   output_string = Encrypt.new(key, "#{input_string}").join_chars_string
   output_file.write(output_string)
