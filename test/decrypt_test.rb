@@ -1,14 +1,14 @@
 gem 'minitest', '~> 5.0'
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/decrypt.rb'
+require './lib/decrypt'
 
 class DecryptTest < Minitest::Test
 
   def test_that_it_can_produce_a_date_integer_with_todays_date
     decrypt = Decrypt.new(12345, ",6 y3e")
 
-    assert_equal 200915, decrypt.date
+    assert_equal 210915, decrypt.date
   end
 
   def test_that_class_initializes_with_input_key_and_encrypted_text

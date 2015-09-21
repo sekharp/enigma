@@ -1,7 +1,7 @@
 gem 'minitest', '~> 5.0'
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/encrypt.rb'
+require './lib/encrypt'
 
 class EncryptTest < Minitest::Test
 
@@ -21,13 +21,13 @@ class EncryptTest < Minitest::Test
   def test_that_it_can_produce_a_date_integer_with_todays_date
     encrypt = Encrypt.new(12345, "Thanks")
 
-    assert_equal 200915, encrypt.date
+    assert_equal 210915, encrypt.date
   end
 
   def test_that_it_can_produce_a_date_integer_with_todays_date_with_different_key_and_input
     encrypt = Encrypt.new(23456, "Another input message")
 
-    assert_equal 200915, encrypt.date
+    assert_equal 210915, encrypt.date
   end
 
   def test_key_rotations_are_created
